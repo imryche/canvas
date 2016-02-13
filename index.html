@@ -25,6 +25,8 @@
 
       for (var i=0; i<4; i++) {
         for (var j=0; j<3; j++) {
+          ctx.fillStyle = getRandomColor();
+          ctx.strokeStyle = getRandomColor();
           ctx.beginPath();
           var x = 25 + j * 50;
           var y = 25 + i * 50;
@@ -47,6 +49,17 @@
       // canvas-unsupported code
       console.log('Sorry, your browser doesn\'t support canvas');
     }
+  }
+
+  function getRandomColor(){
+    var rgb = [];
+    var min = 0;
+    var max = 255;
+    for (var i=0; i<3; i++){
+      var randInt = Math.round(Math.random() * (max - min) + min);
+      rgb.push(randInt);
+    }
+    return 'rgb(' + rgb.join() + ')'
   }
 
   function backingScale(context){

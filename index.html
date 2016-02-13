@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Canvas js tutorial</title>
+  <script type="text/javascript">
+  function draw(){
+    var canvas = document.getElementById('tutorial');
+    if (canvas.getContext){
+      var ctx = canvas.getContext('2d');
+      var scaleFactor = backingScale(ctx);
+
+      if (scaleFactor > 1) {
+        var width = canvas.width;
+        var height = canvas.height;
+
+        canvas.width = width * scaleFactor;
+        canvas.height = height * scaleFactor;
+
+        canvas.style.width = width + 'px';
+        canvas.style.height = height + 'px';
+        //update context for scaled canvas
+        ctx.scale(scaleFactor, scaleFactor);
+      }
+
+      ctx.beginPath();
+      ctx.moveTo(75,50);
+      ctx.lineTo(100,75);
+      ctx.lineTo(100,25);
+      ctx.fill();
+    } else {
+      // canvas-unsupported code
+      console.log('Sorry, your browser doesn\'t support canvas');
+    }
+  }
+
+  function backingScale(context){
+    if ('devicePixelRatio' in window) {
+      if (window.devicePixelRatio > 1){
+        return window.devicePixelRatio;
+      }
+    }
+    return 1;
+  }
+  </script>
+  <style type="text/css">
+  canvas {
+    display: block;
+    border: 1px solid #37474F;
+    margin: 0 auto;
+  }
+  </style>
+</head>
+<body onload="draw();">
+  <div>
+    <canvas id="tutorial" width="640" height="480"></canvas>
+  </div>
+</body>
+</html>

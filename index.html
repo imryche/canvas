@@ -23,20 +23,25 @@
         ctx.scale(scaleFactor, scaleFactor);
       }
 
-      // Filled triangle
-      ctx.beginPath();
-      ctx.moveTo(25,25);
-      ctx.lineTo(105,25);
-      ctx.lineTo(25,105);
-      ctx.fill();
+      for (var i=0; i<4; i++) {
+        for (var j=0; j<3; j++) {
+          ctx.beginPath();
+          var x = 25 + j * 50;
+          var y = 25 + i * 50;
+          var radius = 20;
+          var startAngle = 0;
+          var endAngle = Math.PI + (Math.PI * j) / 2;
+          var anticlockwise = i % 2 == 0 ? false : true;
 
-      // Stroked triangle
-      ctx.beginPath();
-      ctx.moveTo(125,125);
-      ctx.lineTo(125,45);
-      ctx.lineTo(45,125);
-      ctx.closePath();
-      ctx.stroke();
+          ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise);
+
+          if (i > 1){
+            ctx.fill();
+          } else {
+            ctx.stroke();
+          }
+        }
+      }
 
     } else {
       // canvas-unsupported code

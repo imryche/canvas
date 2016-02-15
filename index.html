@@ -22,21 +22,16 @@
         //update context for scaled canvas
         ctx.scale(scaleFactor, scaleFactor);
       }
-      ctx.strokeStyle = getRandomColor();
-      ctx.fillStyle = getRandomColor();
+      //ctx.strokeStyle = getRandomColor();
+      //ctx.fillStyle = getRandomColor();
 
-      var rectangle = new Path2D();
-      rectangle.rect(10, 10, 50, 50);
-
-      var circle = new Path2D();
-      circle.moveTo(125, 35);
-      circle.arc(100, 35, 25, 0, 2 * Math.PI);
-
-      var p = new Path2D("M100 100 h 80 v 80 h -80 Z");
-
-      ctx.stroke(rectangle);
-      ctx.fill(circle);
-      ctx.stroke(p);
+      for (var i=0;i<6;i++){
+        for (var j=0;j<6;j++){
+          ctx.fillStyle = 'rgb(' + Math.floor(255 - 42.5 * i) + ',' +
+                          Math.floor(255 - 42.5 * j) + ',0';
+          ctx.fillRect(j * 25, i * 25, 25, 25);
+        }
+      }
     } else {
       // canvas-unsupported code
       console.log('Sorry, your browser doesn\'t support canvas');

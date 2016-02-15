@@ -32,8 +32,11 @@
       circle.moveTo(125, 35);
       circle.arc(100, 35, 25, 0, 2 * Math.PI);
 
+      var p = new Path2D("M100 100 h 80 v 80 h -80 Z");
+
       ctx.stroke(rectangle);
       ctx.fill(circle);
+      ctx.stroke(p);
     } else {
       // canvas-unsupported code
       console.log('Sorry, your browser doesn\'t support canvas');

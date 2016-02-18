@@ -3,79 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <title>Canvas js tutorial</title>
-  <script type="text/javascript">
-  function draw(){
-    var canvas = document.getElementById('tutorial');
-    if (canvas.getContext){
-      var ctx = canvas.getContext('2d');
-      var scaleFactor = backingScale(ctx);
-
-      if (scaleFactor > 1) {
-        var width = canvas.width;
-        var height = canvas.height;
-
-        canvas.width = width * scaleFactor;
-        canvas.height = height * scaleFactor;
-
-        canvas.style.width = width + 'px';
-        canvas.style.height = height + 'px';
-        //update context for scaled canvas
-        ctx.scale(scaleFactor, scaleFactor);
-      }
-
-      var lineJoin = ['round', 'bevel', 'miter'];
-      ctx.lineWidth = 10;
-
-      for (var i = 0; i < lineJoin.length; i++){
-        ctx.lineJoin = lineJoin[i];
-        ctx.strokeStyle = getRandomColor();
-        ctx.beginPath();
-        ctx.moveTo(-5, 5 + i * 40);
-        ctx.lineTo(35, 45 + i * 40);
-        ctx.lineTo(75, 5 + i * 40);
-        ctx.lineTo(115, 45 + i * 40);
-        ctx.lineTo(155, 5 + i * 40);
-        ctx.stroke();
-      }
-
-
-    } else {
-      // canvas-unsupported code
-      console.log('Sorry, your browser doesn\'t support canvas');
-    }
-  }
-
-  function getRandomColor(){
-    var rgb = [];
-    var min = 0;
-    var max = 255;
-    for (var i=0; i<3; i++){
-      var randInt = Math.round(Math.random() * (max - min) + min);
-      rgb.push(randInt);
-    }
-    return 'rgb(' + rgb.join() + ')'
-  }
-
-  function backingScale(context){
-    if ('devicePixelRatio' in window) {
-      if (window.devicePixelRatio > 1){
-        return window.devicePixelRatio;
-      }
-    }
-    return 1;
-  }
-  </script>
-  <style type="text/css">
-  canvas {
-    display: block;
-    border: 1px solid #37474F;
-    margin: 0 auto;
-  }
-  </style>
 </head>
-<body onload="draw();">
+<body>
   <div>
     <canvas id="tutorial" width="640" height="480"></canvas>
   </div>
+  <script type="text/javascript">
+    var canvas = document.getElementById('tutorial');
+    var ctx = canvas.getContext('2d');
+    var offset = 0;
+
+    function draw() {
+      ctx.clearRect(0,0, canvas.width, canvas.height);
+      ctx.setLineDash([4, 2]);
+      ctx.lineDashOffset = -offset;
+      ctx.strokeRect(10,10, 100, 100);
+    }
+
+    function march() {
+      offset++;
+      if (offset > 16) {
+        offset = 0;
+      }
+      draw();
+      setTimeout(march, 20);
+    }
+
+    march();
+  </script>
+  <style type="text/css">
+    canvas {
+      display: block;
+      border: 1px solid #37474F;
+      margin: 0 auto;
+    }
+  </style>
 </body>
 </html>

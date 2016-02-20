@@ -21,10 +21,8 @@
         ctx.scale(scaleFactor, scaleFactor);
       }
 
-      ctx.beginPath();
-      ctx.arc(50, 50, 30, 0, Math.PI * 2, true);
-      ctx.arc(50, 50, 15, 0, Math.PI * 2, true);
-      ctx.fill('evenodd');
+      ctx.font = '48px Roboto';
+      ctx.fillText('Hello world', 10, 50);
 
     } else {
       // canvas-unsupported code

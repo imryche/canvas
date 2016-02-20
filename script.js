@@ -15,7 +15,8 @@ function draw(){
     }
 
     ctx.font = '48px Roboto';
-    ctx.strokeText('Hello world', 10, 50);
+    var size = ctx.measureText('Foo');
+    console.log(size.width);
 
   } else {
     // canvas-unsupported code

@@ -3,40 +3,74 @@
 <head>
   <meta charset="UTF-8">
   <title>Canvas js tutorial</title>
+  <script type="text/javascript">
+  function draw(){
+    var canvas = document.getElementById('tutorial');
+    if (canvas.getContext){
+      var ctx = canvas.getContext('2d');
+      var scaleFactor = backingScale(ctx);
+      if (scaleFactor > 1) {
+        var width = canvas.width;
+        var height = canvas.height;
+        canvas.width = width * scaleFactor;
+        canvas.height = height * scaleFactor;
+        canvas.style.width = width + 'px';
+        canvas.style.height = height + 'px';
+        //update context for scaled canvas
+        ctx.scale(scaleFactor, scaleFactor);
+      }
+
+      var lingrad = ctx.createLinearGradient(0, 0, 0, 150);
+      lingrad.addColorStop(0, '#00ABEB');
+      lingrad.addColorStop(0.5, "#FFF");
+      lingrad.addColorStop(0.5, '#26C000');
+      lingrad.addColorStop(1, "#FFF");
+
+      var lingrad2 = ctx.createLinearGradient(0, 50, 0, 95);
+      lingrad2.addColorStop(0.5, '#000');
+      lingrad2.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+      ctx.fillStyle = lingrad;
+      ctx.strokeStyle = lingrad2;
+
+      ctx.fillRect(10, 10, 130, 130);
+      ctx.strokeRect(50, 50, 50, 50);
+
+    } else {
+      // canvas-unsupported code
+      console.log('Sorry, your browser doesn\'t support canvas');
+    }
+  }
+  function getRandomColor(){
+    var rgb = [];
+    var min = 0;
+    var max = 255;
+    for (var i=0; i<3; i++){
+      var randInt = Math.round(Math.random() * (max - min) + min);
+      rgb.push(randInt);
+    }
+    return 'rgb(' + rgb.join() + ')'
+  }
+  function backingScale(context){
+    if ('devicePixelRatio' in window) {
+      if (window.devicePixelRatio > 1){
+        return window.devicePixelRatio;
+      }
+    }
+    return 1;
+  }
+  </script>
+  <style type="text/css">
+  canvas {
+    display: block;
+    border: 1px solid #37474F;
+    margin: 0 auto;
+  }
+  </style>
 </head>
-<body>
+<body onload="draw();">
   <div>
     <canvas id="tutorial" width="640" height="480"></canvas>
   </div>
-  <script type="text/javascript">
-    var canvas = document.getElementById('tutorial');
-    var ctx = canvas.getContext('2d');
-    var offset = 0;
-
-    function draw() {
-      ctx.clearRect(0,0, canvas.width, canvas.height);
-      ctx.setLineDash([4, 2]);
-      ctx.lineDashOffset = -offset;
-      ctx.strokeRect(10,10, 100, 100);
-    }
-
-    function march() {
-      offset++;
-      if (offset > 16) {
-        offset = 0;
-      }
-      draw();
-      setTimeout(march, 20);
-    }
-
-    march();
-  </script>
-  <style type="text/css">
-    canvas {
-      display: block;
-      border: 1px solid #37474F;
-      margin: 0 auto;
-    }
-  </style>
 </body>
 </html>

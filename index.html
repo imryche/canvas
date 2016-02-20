@@ -21,14 +21,10 @@
         ctx.scale(scaleFactor, scaleFactor);
       }
 
-      ctx.shadowOffsetX = 2;
-      ctx.shadowOffsetY = 2;
-      ctx.shadowBlur = 2;
-      ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
-
-      ctx.font = '20px Roboto';
-      ctx.fillStyle = "black";
-      ctx.fillText('Wow! That is cool', 5, 30);
+      ctx.beginPath();
+      ctx.arc(50, 50, 30, 0, Math.PI * 2, true);
+      ctx.arc(50, 50, 15, 0, Math.PI * 2, true);
+      ctx.fill('evenodd');
 
     } else {
       // canvas-unsupported code

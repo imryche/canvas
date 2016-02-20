@@ -14,9 +14,17 @@ function draw(){
       ctx.scale(scaleFactor, scaleFactor);
     }
 
-    ctx.font = '48px Roboto';
-    var size = ctx.measureText('Foo');
-    console.log(size.width);
+    var img = new Image();
+    img.src = 'https://mdn.mozillademos.org/files/5395/backdrop.png';
+    img.onload = function(){
+      ctx.drawImage(img, 0, 0);
+      ctx.beginPath();
+      ctx.moveTo(30, 96);
+      ctx.lineTo(70, 66);
+      ctx.lineTo(103, 76);
+      ctx.lineTo(170, 15);
+      ctx.stroke();
+    }
 
   } else {
     // canvas-unsupported code

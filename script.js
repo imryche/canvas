@@ -14,24 +14,15 @@ function draw(){
       ctx.scale(scaleFactor, scaleFactor);
     }
 
-    ctx.fillRect(0, 0, 150, 150);
-    // Save the current state
-    ctx.save();
-
-    ctx.fillStyle = '#09F';
-    ctx.fillRect(15, 15, 120, 120);
-    // Save the current state
-    ctx.save();
-
-    ctx.fillStyle = '#FFF';
-    ctx.globalAlpha = 0.5;
-    ctx.fillRect(30, 30, 90, 90);
-
-    ctx.restore();
-    ctx.fillRect(45, 45, 60, 60);
-
-    ctx.restore();
-    ctx.fillRect(60, 60, 30, 30);
+    for (var i = 0; i < 3; i++) {
+      for (var j = 0; j < 3; j++) {
+        ctx.save();
+        ctx.fillStyle = 'rgb(' + (51 * i) + ',' + (255 - 51 * i) + ', 255';
+        ctx.translate(10 + j * 50, 10 + i * 50);
+        ctx.fillRect(0, 0, 25, 25);
+        ctx.restore();
+      }
+    }
 
   } else {
     // canvas-unsupported code

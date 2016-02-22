@@ -1,23 +1,41 @@
 function draw(){
-  // Loop through all images
-  for (var i = 0; i < document.images.length; i++) {
-    if (document.images[i].getAttribute('id') != 'frame'){
-      //Create canvas element
-      canvas = document.createElement('canvas');
-      canvas.setAttribute('width', 132);
-      canvas.setAttribute('height', 150);
-
-      // Insert before the image
-      document.images[i].parentNode.insertBefore(canvas, document.images[i]);
-
-      ctx = canvas.getContext('2d');
-
-      // Draw image to canvas
-      ctx.drawImage(document.images[i], 15, 20);
-
-      // Add a frame
-      ctx.drawImage(document.getElementById('frame'), 0, 0);
+  var canvas = document.getElementById('tutorial');
+  if (canvas.getContext){
+    var ctx = canvas.getContext('2d');
+    var scaleFactor = backingScale(ctx);
+    if (scaleFactor > 1) {
+      var width = canvas.width;
+      var height = canvas.height;
+      canvas.width = width * scaleFactor;
+      canvas.height = height * scaleFactor;
+      canvas.style.width = width + 'px';
+      canvas.style.height = height + 'px';
+      //update context for scaled canvas
+      ctx.scale(scaleFactor, scaleFactor);
     }
+
+    ctx.fillRect(0, 0, 150, 150);
+    // Save the current state
+    ctx.save();
+
+    ctx.fillStyle = '#09F';
+    ctx.fillRect(15, 15, 120, 120);
+    // Save the current state
+    ctx.save();
+
+    ctx.fillStyle = '#FFF';
+    ctx.globalAlpha = 0.5;
+    ctx.fillRect(30, 30, 90, 90);
+
+    ctx.restore();
+    ctx.fillRect(45, 45, 60, 60);
+
+    ctx.restore();
+    ctx.fillRect(60, 60, 30, 30);
+
+  } else {
+    // canvas-unsupported code
+    console.log('Sorry, your browser doesn\'t support canvas');
   }
 }
 

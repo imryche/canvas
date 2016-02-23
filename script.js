@@ -14,30 +14,17 @@ function draw(){
       ctx.scale(scaleFactor, scaleFactor);
     }
 
-    // left rectangles, rotate from canvas origin
+    // draw a simple rectangle, but scale it
     ctx.save();
-    // blue rect
-    ctx.fillStyle = '#0095DD';
-    ctx.fillRect(30, 30, 100, 100);
-    ctx.rotate((Math.PI / 180) * 25);
-    // grey rect
-    ctx.fillStyle = '#4D4E53';
-    ctx.fillRect(30, 30, 100, 100);
+    ctx.scale(10, 3);
+    ctx.fillRect(1, 10, 10, 10);
     ctx.restore();
 
-    // right rectangles, rotate from rectangle center
-    // draw blue rect
-    ctx.fillStyle = '#0095DD';
-    ctx.fillRect(150, 30, 100, 100);
-    ctx.translate(200, 80); // translate to rectangle center
-                          // x = x + 0.5 * width
-                          // y = y + 0.5 * height
-    ctx.rotate((Math.PI / 180) * 25);
-    ctx.translate(-200, -80);
+    // mirror horizontally
+    ctx.scale(-1, 1);
+    ctx.font = '48px Roboto';
+    ctx.fillText("MDN", -135, 120);
 
-    // draw grey rect
-    ctx.fillStyle = "#4D4E53";
-    ctx.fillRect(150, 30, 100, 100);
 
   } else {
     // canvas-unsupported code

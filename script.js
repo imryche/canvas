@@ -1,7 +1,19 @@
+var sun = new Image();
+var moon = new Image();
+var earth = new Image();
+
+function init(){
+  sun.src = 'https://mdn.mozillademos.org/files/1456/Canvas_sun.png';
+  moon.src = 'https://mdn.mozillademos.org/files/1443/Canvas_moon.png';
+  earth.src = 'https://mdn.mozillademos.org/files/1429/Canvas_earth.png';
+  window.requestAnimationFrame(draw);
+}
+
 function draw(){
   var canvas = document.getElementById('tutorial');
   if (canvas.getContext){
     var ctx = canvas.getContext('2d');
+    /*
     var scaleFactor = backingScale(ctx);
     if (scaleFactor > 1) {
       var width = canvas.width;
@@ -13,55 +25,46 @@ function draw(){
       //update context for scaled canvas
       ctx.scale(scaleFactor, scaleFactor);
     }
+    */
 
-    ctx.fillRect(0, 0, 150, 150);
-    ctx.translate(75, 75);
+    ctx.globalCompositeOperation = 'destination-over';
+    ctx.clearRect(0, 0, 300, 300);
 
-    // Create a circular clipping path
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+    ctx.strokeStyle = 'rgba(0, 153, 255, 0.4)';
+    ctx.save();
+    ctx.translate(150, 150);
+
+    // earth
+    var time = new Date();
+    ctx.rotate(((2 * Math.PI) / 60) * time.getSeconds() + ((2 * Math.PI) / 60000) * time.getMilliseconds());
+    ctx.translate(105, 0);
+    ctx.fillRect(0, -12, 50, 24); // Shadow
+    ctx.drawImage(earth, -12, -12);
+
+    // moon
+    ctx.save();
+    ctx.rotate(((2 * Math.PI) / 6) * time.getSeconds() + ((2 * Math.PI) / 6000) * time.getMilliseconds());
+    ctx.translate(0, 28.5);
+    ctx.drawImage(moon, -3.5, -3.5);
+    ctx.restore();
+
+    ctx.restore()
+
     ctx.beginPath();
-    ctx.arc(0, 0, 60, 0, Math.PI * 2, true);
-    ctx.clip();
+    ctx.arc(150, 150, 105, 0, Math.PI * 2, false); //Earth orbit
+    ctx.stroke();
 
-    // Draw background
-    var lingrad = ctx.createLinearGradient(0, -75, 0, 75);
-    lingrad.addColorStop(0, '#232256');
-    lingrad.addColorStop(1, '#143778');
+    ctx.drawImage(sun, 0, 0, 300, 300);
 
-    ctx.fillStyle = lingrad;
-    ctx.fillRect(-75, -75, 150, 150);
-
-    for (var j = 1; j < 50; j++){
-      ctx.save();
-      ctx.fillStyle = getRandomColor();
-      ctx.translate(75 - Math.floor(Math.random() * 150),
-        75 - Math.floor(Math.random() * 150));
-      drawStar(ctx, Math.floor(Math.random() * 4) + 2);
-      ctx.restore();
-    }
-
+    window.requestAnimationFrame(draw);
   } else {
     // canvas-unsupported code
     console.log('Sorry, your browser doesn\'t support canvas');
   }
 }
 
-function drawStar(ctx, r){
-  ctx.save();
-  ctx.beginPath();
-  ctx.moveTo(r, 0);
-  for (var i = 0; i < 9; i++){
-    ctx.rotate(Math.PI / 5);
-    if  (i % 2 === 0){
-      ctx.lineTo((r / 0.525731) * 0.200811, 0);
-    } else {
-      ctx.lineTo(r, 0);
-    }
-  }
-
-  ctx.closePath();
-  ctx.fill();
-  ctx.restore();
-}
+init();
 
 function getRandomColor(){
   var rgb = [];

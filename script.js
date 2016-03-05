@@ -1,68 +1,43 @@
-var canvas = document.getElementById('canvas');
-var leftOffset = canvas.offsetLeft;
-var ctx = canvas.getContext('2d');
-var raf;
-var running = false;
+var img = new Image();
 
-var ball = {
-  x: 100,
-  y: 100,
-  vx: 5,
-  vy: 2,
-  radius: 25,
-  color: getRandomColor(),
-  draw: function(){
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
-    ctx.closePath();
-    ctx.fillStyle = this.color;
-    ctx.fill();
-  }
+img.src = 'http://localhost:8000/rhino.png';
+img.onload = function(){
+  draw(this);
 };
 
-function clear(){
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+function draw(img){
+  var canvas = document.getElementById('canvas');
+  var ctx = canvas.getContext('2d');
+
+  ctx.drawImage(img, 0, 0);
+  img.style.display = 'none';
+  var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  var data = imageData.data;
+
+  var invert = function(){
+    for (var i = 0; i < data.length; i += 4) {
+      data[i] = 255 - data[i];
+      data[i + 1] = 255 - data[i + 1];
+      data[i + 2] = 255 - data[i + 2];
+    }
+    ctx.putImageData(imageData, 0, 0);
+  };
+
+  var grayscale = function(){
+    for (var i = 0; i < data.length; i += 4) {
+      var avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+      data[i] = avg;
+      data[i + 1] = avg;
+      data[i + 2] = avg;
+    }
+    ctx.putImageData(imageData, 0, 0);
+  }
+
+  var invertBtn = document.getElementById('invertbtn');
+  invertBtn.addEventListener('click', invert);
+  var grayscaleBtn = document.getElementById('grayscalebtn');
+  grayscaleBtn.addEventListener('click', grayscale);
 }
-
-function draw(){
-  clear();
-  ball.draw();
-  ball.x += ball.vx;
-  ball.y += ball.vy;
-
-  if (ball.y + ball.vy + ball.radius > canvas.height || ball.y + ball.vy - ball.radius < 0){
-    ball.vy = -ball.vy;
-  }
-  if (ball.x + ball.vx + ball.radius > canvas.width || ball.x + ball.vx - ball.radius < 0){
-    ball.vx = -ball.vx;
-  }
-
-  raf = window.requestAnimationFrame(draw);
-}
-
-canvas.addEventListener('mousemove', function(e){
-  if (!running){
-    clear();
-    ball.x = e.clientX - leftOffset;
-    ball.y = e.clientY;
-    ball.draw();
-  }
-});
-
-canvas.addEventListener('click', function(e){
-  if (!running){
-    raf = window.requestAnimationFrame(draw);
-    running = true;
-  }
-});
-
-canvas.addEventListener('mouseout', function(e){
-  window.cancelAnimationFrame(raf);
-  running = false;
-});
-
-ball.draw();
 
 function getRandomColor(){
   var rgb = [];
